@@ -24,7 +24,7 @@ public class WsCsvCodelist extends AbstractWorkspaceType {
 	}
 
 	@Override
-	public MutableAsset toAsset(WorkspaceItem item) throws Exception {
+	public MutableAsset getAsset(WorkspaceItem item) throws Exception {
 		return new CsvCodelist(item.getId(), item.getName(), 0);
 	}
 	

@@ -72,7 +72,7 @@ public class IntegrationTests {
 		
 		RepositoryService service = repository.services().lookup(WorkspacePlugin.name);
 		
-		CsvCodelist codelist = new CsvCodelist("smaple-file",0, service);
+		CsvCodelist codelist = new CsvCodelist("sample-csv-codelist",0, service);
 		
 		Table table = new CsvStream2Table<>().apply(codelist,stream);
 		

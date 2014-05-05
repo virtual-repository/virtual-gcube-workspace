@@ -1,11 +1,11 @@
 package org.virtual.workspace;
 
-import static org.gcube.common.homelibrary.home.workspace.WorkspaceItemType.*;
-import static org.gcube.common.homelibrary.home.workspace.folder.FolderItemType.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -14,7 +14,6 @@ import javax.inject.Singleton;
 
 import org.gcube.common.homelibrary.home.workspace.Workspace;
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
-import org.gcube.common.homelibrary.home.workspace.folder.FolderItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.workspace.types.WorkspaceType;
@@ -28,37 +27,53 @@ public class WorkspaceBrowser implements Browser {
 	
 	private static final Logger log = LoggerFactory.getLogger(WorkspaceBrowser.class);
 	
-	@Inject
-	Provider<Workspace> workspaces;
+	private final Provider<Workspace> ws;
+	
+	private final Map<AssetType,WorkspaceType> mapping = new HashMap<>(); 
 	
 	@Inject
-	Set<WorkspaceType> types;
+	public WorkspaceBrowser(Provider<Workspace> ws, Set<WorkspaceType> types) {
+		
+		this.ws=ws;
+		
+		for (WorkspaceType type : types)
+			mapping.put(type.assetType(),type);
+	}
 
 	@Override
 	public Iterable<? extends MutableAsset> discover(Collection<? extends AssetType> types) throws Exception {
 		
 		log.info("discovering assets in workspace of "+Context.properties().lookup(Context.username).value(String.class));
 		
-		return assetsIn(workspaces.get());
+		return assetsIn(ws.get(),invert(types));
 
 	}
 	
-	private Iterable<? extends MutableAsset> assetsIn(Workspace ws) throws Exception {
+	private Iterable<? extends MutableAsset> assetsIn(Workspace ws,Iterable<WorkspaceType> types) throws Exception {
 		
-		//dummy logic for now
+		//TODO dummy logic for now, will send a query.
 		
 		List<MutableAsset> items = new ArrayList<>();
 		
-		for (WorkspaceItem item : ws.getRoot().getChildren())
-			if (item.getType()==FOLDER_ITEM) {
-				FolderItem fi = (FolderItem) item;
-				if (fi.getFolderItemType()==EXTERNAL_FILE)
-					for (WorkspaceType type : types)
-						if (fi.getMimeType().equals(type.mime()))
-							items.add(type.toAsset(fi));
-			}
-		
+		for (WorkspaceItem item : ws.getRoot().getChildren()) { 
+			Set<String> keys = item.getProperties().getProperties().keySet();
+			for (WorkspaceType type : types)
+				if (keys.containsAll(type.tags()))
+					items.add(type.toAsset(item));
+	
+		}
+			
 		return items;
 	}
 
+	private Collection<WorkspaceType> invert(Collection<? extends AssetType> types) {
+		
+		Set<WorkspaceType> wtypes = new HashSet<>();
+		
+		for(AssetType atype : types)
+			if (mapping.containsKey(atype))
+				wtypes.add(mapping.get(atype));
+		
+		return wtypes;
+	}
 }

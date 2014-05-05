@@ -1,7 +1,8 @@
 package org.virtual.workspace.utils;
 
 import static dagger.Provides.Type.*;
-import static org.virtual.workspace.utils.Context.*;
+import static org.virtualrepository.CommonProperties.*;
+import static org.virtualrepository.Context.*;
 
 import javax.inject.Named;
 
@@ -28,8 +29,8 @@ public class Dependencies {
 		
 		Properties contextual = properties();
 		
-		if (contextual.contains(username))
-			return contextual.lookup(username).value(String.class);
+		if (contextual.contains(USERNAME.name()))
+			return contextual.lookup(USERNAME.name()).value(String.class);
 		else
 			throw new IllegalStateException("no current user");
 	}

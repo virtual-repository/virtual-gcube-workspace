@@ -1,7 +1,8 @@
 package org.acme;
 
 import static java.lang.System.*;
-import static org.virtual.workspace.utils.Context.*;
+import static org.virtualrepository.CommonProperties.*;
+import static org.virtualrepository.Context.*;
 
 import java.io.InputStream;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class IntegrationTests {
 	public static void setup() {
 		
 		setProperty("org.slf4j.simpleLogger.log.org.virtual", "trace");
-		properties().add(user("fabio.simeoni"));
+		properties().add(USERNAME.property("fabio.simeoni"));
 		ScopeProvider.instance.set("/gcube/devsec");
 	}
 	
@@ -52,6 +53,23 @@ public class IntegrationTests {
 		
 		for (Asset s : repository)
 			log.info("name={}\nproperties{}\n",s.name(),s.properties());
+	}
+	
+	
+	@Test
+	public void usersAreKeptApart() {
+		
+		VirtualRepository repository = new Repository();
+		
+		properties().add(USERNAME.property("fabio.simeoni"));
+		
+		repository.discover(1000000,CsvCodelist.type);
+		
+		properties().add(USERNAME.property("someone.else"));
+		
+		repository.discover(1000000,CsvCodelist.type);
+		
+		
 	}
 	
 	

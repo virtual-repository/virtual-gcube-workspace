@@ -1,6 +1,6 @@
 package org.virtual.workspace;
 
-import static org.virtualrepository.utils.CommonProperties.*;
+import static org.virtualrepository.CommonProperties.*;
 
 import java.io.InputStream;
 

@@ -1,5 +1,8 @@
 package org.virtual.workspace;
 
+import static org.virtualrepository.CommonProperties.*;
+import static org.virtualrepository.Context.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +20,6 @@ import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.workspace.types.WorkspaceType;
-import org.virtual.workspace.utils.Context;
 import org.virtualrepository.AssetType;
 import org.virtualrepository.spi.Browser;
 import org.virtualrepository.spi.MutableAsset;
@@ -43,7 +45,7 @@ public class WorkspaceBrowser implements Browser {
 	@Override
 	public Iterable<? extends MutableAsset> discover(Collection<? extends AssetType> types) throws Exception {
 		
-		log.info("discovering assets in workspace of "+Context.properties().lookup(Context.username).value(String.class));
+		log.info("discovering assets in workspace of "+properties().lookup(USERNAME.name()).value());
 		
 		return assetsIn(ws.get(),invert(types));
 

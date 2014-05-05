@@ -48,7 +48,7 @@ public class WorkspaceBrowser implements Browser {
 			if (item.getType()==FOLDER_ITEM) {
 				FolderItem fi = (FolderItem) item;
 				if (fi.getFolderItemType()==EXTERNAL_FILE)
-					for (WorkspaceAssetType type : WorkspaceAssetType.values())
+					for (WorkspaceType type : WorkspaceType.values())
 						if (fi.getMimeType().equals(type.mime()))
 							items.add(type.toAsset(fi));
 			}

@@ -3,18 +3,17 @@ package org.virtual.workspace;
 import java.io.InputStream;
 
 import org.gcube.common.homelibrary.home.workspace.Workspace;
-import org.gcube.common.homelibrary.home.workspace.folder.items.ExternalFile;
 import org.virtualrepository.Asset;
 import org.virtualrepository.impl.Type;
-import org.virtualrepository.spi.Importer;
+import org.virtualrepository.spi.Publisher;
 
-public class WorkspaceImporter implements Importer<Asset,InputStream> {
+public class WorkspacePublisher implements Publisher<Asset,InputStream> {
 
 	private final WorkspaceType type;
 	private final Workspace ws;
 	
 	
-	public WorkspaceImporter(Workspace ws, WorkspaceType type) {
+	public WorkspacePublisher(Workspace ws, WorkspaceType type) {
 		this.type=type;
 		this.ws=ws;
 	}
@@ -31,10 +30,9 @@ public class WorkspaceImporter implements Importer<Asset,InputStream> {
 	}
 
 	@Override
-	public InputStream retrieve(Asset asset) throws Exception {
+	public void publish(Asset asset, InputStream content) throws Exception {
+		ws.createExternalFile(asset.name(),"",type.mime(), content,ws.getRoot().getId());
 		
-		return ExternalFile.class.cast(ws.getItem(asset.id())).getData();
-	
 	}
 
 }

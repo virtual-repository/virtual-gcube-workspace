@@ -12,6 +12,7 @@ import org.virtualrepository.spi.Browser;
 import org.virtualrepository.spi.ImportAdapter;
 import org.virtualrepository.spi.Importer;
 import org.virtualrepository.spi.Lifecycle;
+import org.virtualrepository.spi.PublishAdapter;
 import org.virtualrepository.spi.Publisher;
 import org.virtualrepository.spi.ServiceProxy;
 import org.virtualrepository.spi.Transform;
@@ -35,13 +36,19 @@ public class WorkspaceProxy implements ServiceProxy, Lifecycle {
 	public void init() throws Exception {
 		
 		
-		for (WorkspaceAssetType type : WorkspaceAssetType.values()) {
+		for (WorkspaceType type : WorkspaceType.values()) {
 			
-			Importer<?,?> base = new WorkspaceImporter(ws,type.assetType());
-			Transform<?,InputStream,?> transform = type.transform();
-			Importer<?,?> importer = ImportAdapter.adapt((Importer) base,transform);
+			Importer<?,?> baseImporter = new WorkspaceImporter(ws,type);
 			
+			Transform<?,InputStream,?> importTransform = type.transformOnImport();
+			Importer<?,?> importer = ImportAdapter.adapt((Importer) baseImporter,importTransform);
 			importers.add(importer);
+		
+			Publisher<?,?> basePublisher = new WorkspacePublisher(ws,type);
+			Transform<?,?,InputStream> publishTransform = type.transformOnPublih();
+			Publisher<?,?> publisher = PublishAdapter.adapt((Publisher) basePublisher,publishTransform);
+			publishers.add(publisher);
+			
 		}
 		
 	}

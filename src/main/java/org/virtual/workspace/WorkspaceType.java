@@ -3,14 +3,14 @@ package org.virtual.workspace;
 import java.io.InputStream;
 
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
-import org.virtualrepository.Asset;
 import org.virtualrepository.csv.CsvCodelist;
 import org.virtualrepository.csv.CsvStream2Table;
+import org.virtualrepository.csv.Table2CsvStream;
 import org.virtualrepository.impl.Type;
 import org.virtualrepository.spi.MutableAsset;
 import org.virtualrepository.spi.Transform;
 
-public enum WorkspaceAssetType {
+public enum WorkspaceType {
 
 	CSVCODELIST(CsvCodelist.type,"text/plain") {
 		
@@ -20,16 +20,22 @@ public enum WorkspaceAssetType {
 		}
 		
 		@Override
-		Transform<? extends Asset, InputStream, ?> transform() {
+		Transform<?,InputStream, ?> transformOnImport() {
 			return new CsvStream2Table<CsvCodelist>();
 		}
+		
+		@Override
+		Transform<?,?, InputStream> transformOnPublih() {
+			return new Table2CsvStream<CsvCodelist>();
+		}
 	};
+	
 	
 	
 	private final Type<?> type;
 	private final String mime;
 	
-	private WorkspaceAssetType(Type<?> type, String mime) {
+	private WorkspaceType(Type<?> type, String mime) {
 		this.type = type;
 		this.mime =mime;
 	} 
@@ -43,7 +49,8 @@ public enum WorkspaceAssetType {
 	}
 	
 	
-	abstract Transform<? extends Asset, InputStream, ?>  transform();
+	abstract Transform<?,InputStream,?>  transformOnImport();
+	abstract Transform<?,?,InputStream>  transformOnPublih();
 	
 	abstract MutableAsset toAsset(WorkspaceItem item) throws Exception;
 }

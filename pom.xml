@@ -39,6 +39,12 @@
 			<artifactId>virtual-repository</artifactId>
 			<version>[1.0.0-SNAPSHOT,2.0.0-SNAPSHOT)</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.virtualrepository</groupId>
+			<artifactId>sdmxsource-adapter</artifactId>
+			<version>[1.0.0-SNAPSHOT,2.0.0-SNAPSHOT)</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.gcube.common</groupId>

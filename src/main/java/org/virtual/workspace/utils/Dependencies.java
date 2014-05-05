@@ -7,9 +7,13 @@ import javax.inject.Named;
 
 import org.gcube.common.homelibrary.home.HomeLibrary;
 import org.gcube.common.homelibrary.home.workspace.Workspace;
+import org.sdmx.SdmxServiceFactory;
+import org.sdmxsource.sdmx.api.manager.output.StructureWriterManager;
+import org.sdmxsource.sdmx.api.manager.parse.StructureParsingManager;
 import org.virtual.workspace.WorkspacePlugin;
 import org.virtual.workspace.types.WorkspaceType;
 import org.virtual.workspace.types.WsCsvCodelist;
+import org.virtual.workspace.types.WsSdmxCodelist;
 import org.virtualrepository.Properties;
 
 import dagger.Module;
@@ -44,5 +48,20 @@ public class Dependencies {
 	@Provides(type=SET)
 	WorkspaceType csvcodelist() {
 		return new WsCsvCodelist();
+	}
+	
+	@Provides(type=SET)
+	WorkspaceType sdmxcodelist(WsSdmxCodelist list) {
+		return list;
+	}
+	
+	@Provides
+	StructureParsingManager parser() {
+		return SdmxServiceFactory.parser();
+	}
+	
+	@Provides
+	StructureWriterManager writer() {
+		return SdmxServiceFactory.writer();
 	}
 }

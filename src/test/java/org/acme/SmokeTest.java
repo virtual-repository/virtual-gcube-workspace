@@ -3,10 +3,13 @@ package org.acme;
 import static org.acme.Utils.*;
 import static org.junit.Assert.*;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.virtual.workspace.WorkspacePlugin;
+import org.virtual.workspace.types.WorkspaceType;
 import org.virtual.workspace.utils.Dependencies;
 import org.virtualrepository.VirtualRepository;
 import org.virtualrepository.impl.Repository;
@@ -19,12 +22,18 @@ public class SmokeTest {
 	@Inject
 	WorkspacePlugin plugin;
 	
+	@Inject
+	Set<WorkspaceType> types;
+
+	
 	@Test
 	public void dependenciesAreInjected() {
 		
 		inject(this);
 		
 		assertNotNull(plugin);
+		
+		assertFalse(types.isEmpty());
 		
 	}
 	

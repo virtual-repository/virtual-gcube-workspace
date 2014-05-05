@@ -2,7 +2,10 @@ package org.virtual.workspace;
 
 import java.io.InputStream;
 
+import javax.inject.Provider;
+
 import org.gcube.common.homelibrary.home.workspace.Workspace;
+import org.virtual.workspace.types.WorkspaceType;
 import org.virtualrepository.Asset;
 import org.virtualrepository.impl.Type;
 import org.virtualrepository.spi.Publisher;
@@ -10,10 +13,10 @@ import org.virtualrepository.spi.Publisher;
 public class WorkspacePublisher implements Publisher<Asset,InputStream> {
 
 	private final WorkspaceType type;
-	private final Workspace ws;
+	private final Provider<Workspace> ws;
 	
 	
-	public WorkspacePublisher(Workspace ws, WorkspaceType type) {
+	public WorkspacePublisher(Provider<Workspace> ws, WorkspaceType type) {
 		this.type=type;
 		this.ws=ws;
 	}
@@ -31,7 +34,11 @@ public class WorkspacePublisher implements Publisher<Asset,InputStream> {
 
 	@Override
 	public void publish(Asset asset, InputStream content) throws Exception {
-		ws.createExternalFile(asset.name(),"",type.mime(), content,ws.getRoot().getId());
+		
+		Workspace workspace = ws.get();
+		String folderId = workspace.getRoot().getId();
+		
+		workspace.createExternalFile(asset.name(),"",type.mime(), content,folderId);
 		
 	}
 

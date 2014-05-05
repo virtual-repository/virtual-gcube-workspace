@@ -6,6 +6,7 @@ import static org.gcube.common.homelibrary.home.workspace.folder.FolderItemType.
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -16,6 +17,7 @@ import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
 import org.gcube.common.homelibrary.home.workspace.folder.FolderItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.virtual.workspace.types.WorkspaceType;
 import org.virtual.workspace.utils.Context;
 import org.virtualrepository.AssetType;
 import org.virtualrepository.spi.Browser;
@@ -28,6 +30,9 @@ public class WorkspaceBrowser implements Browser {
 	
 	@Inject
 	Provider<Workspace> workspaces;
+	
+	@Inject
+	Set<WorkspaceType> types;
 
 	@Override
 	public Iterable<? extends MutableAsset> discover(Collection<? extends AssetType> types) throws Exception {
@@ -48,7 +53,7 @@ public class WorkspaceBrowser implements Browser {
 			if (item.getType()==FOLDER_ITEM) {
 				FolderItem fi = (FolderItem) item;
 				if (fi.getFolderItemType()==EXTERNAL_FILE)
-					for (WorkspaceType type : WorkspaceType.values())
+					for (WorkspaceType type : types)
 						if (fi.getMimeType().equals(type.mime()))
 							items.add(type.toAsset(fi));
 			}

@@ -5,7 +5,10 @@ import static org.virtualrepository.CommonProperties.*;
 import static org.virtualrepository.Context.*;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.xml.bind.JAXBContext;
 
+import org.fao.fi.comet.mapping.model.MappingData;
 import org.gcube.common.homelibrary.home.HomeLibrary;
 import org.gcube.common.homelibrary.home.workspace.Workspace;
 import org.sdmx.SdmxServiceFactory;
@@ -13,6 +16,8 @@ import org.sdmxsource.sdmx.api.manager.output.StructureWriterManager;
 import org.sdmxsource.sdmx.api.manager.parse.StructureParsingManager;
 import org.virtual.workspace.WorkspacePlugin;
 import org.virtual.workspace.types.WorkspaceType;
+import org.virtual.workspace.types.WsCometMapping;
+import org.virtual.workspace.types.WsCometStreamMapping;
 import org.virtual.workspace.types.WsCsvCodelist;
 import org.virtual.workspace.types.WsSdmxCodelist;
 import org.virtualrepository.Properties;
@@ -46,14 +51,24 @@ public class Dependencies {
 		}
 	}
 	
-	@Provides(type=SET)
-	WorkspaceType csvcodelist() {
-		return new WsCsvCodelist();
+	@Provides(type=SET) @Singleton
+	WorkspaceType csvcodelist(WsCsvCodelist list) {
+		return list;
 	}
 	
-	@Provides(type=SET)
+	@Provides(type=SET) @Singleton
 	WorkspaceType sdmxcodelist(WsSdmxCodelist list) {
 		return list;
+	}
+	
+	@Provides(type=SET) @Singleton
+	WorkspaceType cometmapping(WsCometStreamMapping mapping) {
+		return mapping;
+	}
+	
+	@Provides(type=SET) @Singleton
+	WorkspaceType cometmapping(WsCometMapping mapping) {
+		return mapping;
 	}
 	
 	@Provides
@@ -64,5 +79,16 @@ public class Dependencies {
 	@Provides
 	StructureWriterManager writer() {
 		return SdmxServiceFactory.writer();
+	}
+	
+	@Provides @Singleton
+	JAXBContext jaxb() {
+		
+		try {
+			return JAXBContext.newInstance(MappingData.class);
+		}
+		catch(Exception e) {
+			throw new RuntimeException("configuration error: cannot instantiate JAXB context",e);
+		}
 	}
 }

@@ -7,24 +7,27 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
 import org.virtualrepository.csv.CsvCodelist;
 import org.virtualrepository.csv.CsvStream2Table;
 import org.virtualrepository.csv.Table2CsvStream;
-import org.virtualrepository.spi.MutableAsset;
 import org.virtualrepository.spi.Transform;
+import org.virtualrepository.tabular.Table;
 
-public class WsCsvCodelist extends AbstractWorkspaceType {
+public class WsCsvCodelist extends AbstractWorkspaceType<CsvCodelist,Table> {
 
-	private final Transform<?, InputStream, ?> importTransform = new CsvStream2Table<CsvCodelist>();
-	private final Transform<?, ?, InputStream> publishTransform = new Table2CsvStream<CsvCodelist>();
+	private final Transform<CsvCodelist, InputStream, Table> importTransform = new CsvStream2Table<CsvCodelist>();
+	private final Transform<CsvCodelist, Table, InputStream> publishTransform = new Table2CsvStream<CsvCodelist>();
 	
+	@Inject
 	public WsCsvCodelist() {
 		super(CsvCodelist.type, "text/plain");
 	}
 
 	@Override
-	public MutableAsset getAsset(WorkspaceItem item) throws Exception {
+	public CsvCodelist getAsset(WorkspaceItem item) throws Exception {
 		return new CsvCodelist(item.getId(), item.getName(), 0);
 	}
 	
@@ -34,12 +37,12 @@ public class WsCsvCodelist extends AbstractWorkspaceType {
 	}
 
 	@Override
-	public Transform<?, InputStream, ?> transformOnImport() {
+	public Transform<CsvCodelist, InputStream, Table> transformOnImport() {
 		return importTransform;
 	}
 
 	@Override
-	public Transform<?, ?, InputStream> transformOnPublih() {
+	public Transform<CsvCodelist, Table, InputStream> transformOnPublih() {
 		return publishTransform;
 	}
 

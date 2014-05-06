@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
@@ -23,17 +22,15 @@ import org.sdmxsource.sdmx.sdmxbeans.model.SdmxStructureFormat;
 import org.sdmxsource.sdmx.util.beans.container.SdmxBeansImpl;
 import org.sdmxsource.util.io.ReadableDataLocationTmp;
 import org.virtualrepository.sdmx.SdmxCodelist;
-import org.virtualrepository.spi.MutableAsset;
 import org.virtualrepository.spi.Transform;
 
-@Singleton
-public class WsSdmxCodelist extends AbstractWorkspaceType {
+public class WsSdmxCodelist extends AbstractWorkspaceType<SdmxCodelist,CodelistBean> {
 
 	private final StructureParsingManager parser;
 	private final StructureWriterManager writer;
 
 	
-	private final Transform<?, InputStream, ?> importTransform = new Transform<SdmxCodelist, InputStream,CodelistBean>() {
+	private final Transform<SdmxCodelist, InputStream, CodelistBean> importTransform = new Transform<SdmxCodelist, InputStream,CodelistBean>() {
 		
 		@Override
 		public CodelistBean apply(SdmxCodelist asset, InputStream input) throws Exception {
@@ -61,7 +58,7 @@ public class WsSdmxCodelist extends AbstractWorkspaceType {
 		}
 	};
 
-	private final Transform<?, ?, InputStream> publishTransform = new Transform<SdmxCodelist,CodelistBean, InputStream>() {
+	private final Transform<SdmxCodelist, CodelistBean, InputStream> publishTransform = new Transform<SdmxCodelist,CodelistBean, InputStream>() {
 		
 		public InputStream apply(SdmxCodelist asset, CodelistBean input) throws Exception {
 			
@@ -95,7 +92,7 @@ public class WsSdmxCodelist extends AbstractWorkspaceType {
 	}
 
 	@Override
-	public MutableAsset getAsset(WorkspaceItem item) throws Exception {
+	public SdmxCodelist getAsset(WorkspaceItem item) throws Exception {
 		return new SdmxCodelist(item.getId(),item.getId(),"n/a", item.getName());
 	}
 	
@@ -105,12 +102,12 @@ public class WsSdmxCodelist extends AbstractWorkspaceType {
 	}
 
 	@Override
-	public Transform<?, InputStream, ?> transformOnImport() {
+	public Transform<SdmxCodelist, InputStream, CodelistBean> transformOnImport() {
 		return importTransform;
 	}
 
 	@Override
-	public Transform<?, ?, InputStream> transformOnPublih() {
+	public Transform<SdmxCodelist, CodelistBean, InputStream> transformOnPublih() {
 		return publishTransform;
 	}
 

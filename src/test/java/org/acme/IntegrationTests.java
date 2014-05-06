@@ -1,12 +1,28 @@
 package org.acme;
 
 import static java.lang.System.*;
+import static org.fao.fi.comet.mapping.dsl.MappingContributionDSL.*;
+import static org.fao.fi.comet.mapping.dsl.MappingDSL.*;
+import static org.fao.fi.comet.mapping.dsl.MappingDataDSL.*;
+import static org.fao.fi.comet.mapping.dsl.MappingDetailDSL.*;
+import static org.fao.fi.comet.mapping.dsl.MappingElementDSL.*;
+import static org.fao.fi.comet.mapping.dsl.MappingElementIdentifierDSL.*;
+import static org.fao.fi.comet.mapping.dsl.MatcherConfigurationDSL.*;
+import static org.fao.fi.comet.mapping.dsl.MatcherConfigurationPropertyDSL.*;
 import static org.virtualrepository.CommonProperties.*;
 import static org.virtualrepository.Context.*;
 
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.fao.fi.comet.mapping.model.DataProvider;
+import org.fao.fi.comet.mapping.model.Mapping;
+import org.fao.fi.comet.mapping.model.MappingData;
 import org.gcube.common.scope.api.ScopeProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,6 +42,7 @@ import org.virtualrepository.RepositoryService;
 import org.virtualrepository.VirtualRepository;
 import org.virtualrepository.csv.CsvCodelist;
 import org.virtualrepository.csv.CsvStream2Table;
+import org.virtualrepository.fmf.CometAsset;
 import org.virtualrepository.impl.Repository;
 import org.virtualrepository.sdmx.SdmxCodelist;
 import org.virtualrepository.tabular.Row;
@@ -105,6 +122,23 @@ public class IntegrationTests {
 	}
 	
 	@Test
+	public void retrieveCometMapping() throws Exception {
+	
+		VirtualRepository repository = new Repository();
+		
+		repository.discover(1000000,CometAsset.type);
+		
+		Asset mapping = repository.iterator().next();
+		
+		MappingData data = repository.retrieve(mapping,MappingData.class);
+		
+		for (Mapping m : data.getMappings())
+			System.out.println(m.toString()+"`n");
+		
+		
+	}
+	
+	@Test
 	public void publishCsvCodelist() throws Exception {
 
 		InputStream stream = getClass().getResourceAsStream("/samplecsv.txt");
@@ -116,7 +150,7 @@ public class IntegrationTests {
 		
 		RepositoryService service = repository.services().lookup(WorkspacePlugin.name);
 		
-		CsvCodelist codelist = new CsvCodelist("sample-csv-codelist",0, service);
+		CsvCodelist codelist = new CsvCodelist("sample-csv-codelist.txt",0, service);
 		
 		Table table = new CsvStream2Table<>().apply(codelist,stream);
 		
@@ -135,10 +169,67 @@ public class IntegrationTests {
 		
 		RepositoryService service = repository.services().lookup(WorkspacePlugin.name);
 		
-		SdmxCodelist codelist = new SdmxCodelist("sample-sdmx-codelist",service);
+		SdmxCodelist codelist = new SdmxCodelist("sample-sdmx-codelist.xml",service);
 		
 		repository.publish(codelist,bean(stream));
 	}
+	
+	
+	
+	@Test
+    public void publishMapping() throws Exception {
+
+        VirtualRepository repo = new Repository();
+
+        RepositoryService service = repo.services().lookup(WorkspacePlugin.name);
+
+        CometAsset asset = new CometAsset("sample-comet-mapping.xml", service);
+        
+        repo.publish(asset, amapping());
+    }
+
+	@XmlRootElement
+	private static class Dummy {}
+
+    private MappingData amapping() throws URISyntaxException {
+    	
+    	Dummy d = new Dummy();
+    	
+    	DataProvider sourceDataProvider = new DataProvider(new URI("urn:fooResourceStatus"), Dummy.class.getName());
+		DataProvider targetDataProvider = new DataProvider(new URI("urn:barResourceStatus"), Dummy.class.getName());
+		
+		MappingData mappingData = new MappingData().
+			id(new URI("urn:foo:bar")).
+			version("0.01").
+			producedBy("Foo Bazzi").
+			on(new Date()).
+			linking(sourceDataProvider).to(targetDataProvider).
+			through(
+				configuredMatcher(new URI("urn:matcher:foo")).
+					ofType("org.fao.fi.comet.common.matchers.LexicalMatcher").
+					weighting(10).
+					withMinimumScore(0.1).
+					having(
+						configurationProperty("stripSymbols", Boolean.FALSE)
+					)
+			).
+			with(minimumWeightedScore(0.3), maximumCandidates(5)).
+			including(
+				map(wrap(d).with(identifierFor(sourceDataProvider, new URI("urn:2")))).
+					to(
+						target(wrap(d).with(identifierFor(targetDataProvider, new URI("urn:70")))).
+							asContributedBy(matcher(new URI("urn:matcher:foo")).scoring(0.49), 
+											matcher(new URI("urn:matcher:bar")).scoring(0.59),
+											matcher(new URI("urn:matcher:baz")).nonPerformed()
+							).withWeightedScore(0.39)
+					)
+		);
+        
+        return mappingData;
+    }
+
+    
+	// helpers
 	
 	
 	private CodelistBean bean(InputStream stream) {

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Map.Entry;
 
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
+import org.virtual.workspace.utils.Tags;
 import org.virtualrepository.Property;
 import org.virtualrepository.impl.Type;
 import org.virtualrepository.spi.MutableAsset;
@@ -30,6 +31,7 @@ public abstract class AbstractWorkspaceType<T extends MutableAsset,A> implements
 	@Override
 	public T toAsset(WorkspaceItem item) throws Exception {
 		T asset = getAsset(item);
+		asset.setVersion(item.getProperties().getProperties().get(Tags.VERSION));
 		for (Entry<String,String> entry : item.getProperties().getProperties().entrySet())
 			asset.properties().add(new Property(entry.getKey(),entry.getValue()));
 		return asset;

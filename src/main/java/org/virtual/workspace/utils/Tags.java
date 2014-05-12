@@ -5,4 +5,7 @@ public enum Tags {
 	SDMX, CSV, COMET,
 	
 	CODELIST, MAPPING, 
+	
+	VERSION
+	
 }

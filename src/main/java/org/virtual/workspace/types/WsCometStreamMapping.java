@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
-import org.virtualrepository.fmf.CometAsset;
+import org.virtualrepository.comet.CometAsset;
 import org.virtualrepository.spi.Transform;
 
 @Singleton

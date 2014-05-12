@@ -15,7 +15,7 @@ import javax.xml.bind.JAXBContext;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.fao.fi.comet.mapping.model.MappingData;
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
-import org.virtualrepository.fmf.CometAsset;
+import org.virtualrepository.comet.CometAsset;
 import org.virtualrepository.spi.Transform;
 
 @Singleton

@@ -1,5 +1,6 @@
 package org.virtual.workspace;
 
+import static org.virtual.workspace.utils.Tags.*;
 import static org.virtualrepository.CommonProperties.*;
 
 import java.io.InputStream;
@@ -50,6 +51,9 @@ public class WorkspacePublisher implements Publisher<Asset,InputStream> {
 								:""; 
 				
 		WorkspaceItem item = workspace.createExternalFile(asset.name(),description,type.mime(), content,folderId);
+		
+		if (asset.version()!=null)
+			item.getProperties().addProperty(VERSION.name(),asset.version());
 		
 		copy(properties,item);
 	}

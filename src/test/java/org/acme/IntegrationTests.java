@@ -150,7 +150,7 @@ public class IntegrationTests {
 		
 		RepositoryService service = repository.services().lookup(WorkspacePlugin.name);
 		
-		CsvCodelist codelist = new CsvCodelist("sample-csv-codelist.txt",0, service);
+		CsvCodelist codelist = new CsvCodelist("another-sample-csv-codelist.txt",0, service);
 		
 		Table table = new CsvStream2Table<>().apply(codelist,stream);
 		
@@ -169,7 +169,9 @@ public class IntegrationTests {
 		
 		RepositoryService service = repository.services().lookup(WorkspacePlugin.name);
 		
-		SdmxCodelist codelist = new SdmxCodelist("sample-sdmx-codelist.xml",service);
+		SdmxCodelist codelist = new SdmxCodelist("another-sample-sdmx-codelist.xml",service);
+		
+		codelist.setVersion("2.0");
 		
 		repository.publish(codelist,bean(stream));
 	}

@@ -4,7 +4,6 @@ import static dagger.Provides.Type.*;
 import static org.virtualrepository.CommonProperties.*;
 import static org.virtualrepository.Context.*;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.xml.bind.JAXBContext;
 
@@ -14,6 +13,7 @@ import org.gcube.common.homelibrary.home.workspace.Workspace;
 import org.sdmx.SdmxServiceFactory;
 import org.sdmxsource.sdmx.api.manager.output.StructureWriterManager;
 import org.sdmxsource.sdmx.api.manager.parse.StructureParsingManager;
+import org.virtual.workspace.CurrentUser;
 import org.virtual.workspace.WorkspacePlugin;
 import org.virtual.workspace.types.WorkspaceType;
 import org.virtual.workspace.types.WsCometMapping;
@@ -29,22 +29,24 @@ import dagger.Provides;
 public class Dependencies {
 
 	
-	@Provides @Named("current")
-	String user() {
+	@Provides
+	CurrentUser user() {
 		
 		Properties contextual = properties();
 		
-		if (contextual.contains(USERNAME.name()))
-			return contextual.lookup(USERNAME.name()).value(String.class);
-		else
-			throw new IllegalStateException("no current user");
+		return contextual.contains(USERNAME.name())?
+			new CurrentUser(contextual.lookup(USERNAME.name()).value(String.class))
+		:
+			null;
 	}
 	
 	@Provides
-	Workspace workspace(@Named("current") String user) {
+	Workspace workspace(CurrentUser user) {
 			
+		if (user==null)
+				throw new IllegalStateException("no current user");
 		try {
-			return HomeLibrary.getUserWorkspace(user);
+			return HomeLibrary.getUserWorkspace(user.name());
 		}
 		catch(Exception e) {
 			throw new RuntimeException("cannot access workspace of "+user,e);

@@ -35,6 +35,9 @@ public class WorkspaceProxy implements ServiceProxy, Lifecycle {
 	Provider<Workspace> ws;
 	
 	@Inject
+	Provider<CurrentUser> currentUser;
+	
+	@Inject
 	Set<WorkspaceType> types;
 	
 	private final List<Publisher<?,?>> publishers = new ArrayList<Publisher<?,?>>();

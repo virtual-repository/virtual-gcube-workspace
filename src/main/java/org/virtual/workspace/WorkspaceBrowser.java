@@ -1,7 +1,6 @@
 package org.virtual.workspace;
 
-import static org.virtualrepository.CommonProperties.*;
-import static org.virtualrepository.Context.*;
+import static java.util.Collections.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,12 +30,16 @@ public class WorkspaceBrowser implements Browser {
 	
 	private final Provider<Workspace> ws;
 	
+	private final Provider<CurrentUser> currentUser;
+	
 	private final Map<AssetType,WorkspaceType> mapping = new HashMap<>(); 
 	
 	@Inject
-	public WorkspaceBrowser(Provider<Workspace> ws, Set<WorkspaceType> types) {
+	public WorkspaceBrowser(Provider<Workspace> ws,  Provider<CurrentUser> currentUser, Set<WorkspaceType> types) {
 		
 		this.ws=ws;
+		
+		this.currentUser=currentUser;
 		
 		for (WorkspaceType type : types)
 			mapping.put(type.assetType(),type);
@@ -45,7 +48,14 @@ public class WorkspaceBrowser implements Browser {
 	@Override
 	public Iterable<? extends MutableAsset> discover(Collection<? extends AssetType> types) throws Exception {
 		
-		log.info("discovering assets in workspace of "+properties().lookup(USERNAME.name()).value());
+		CurrentUser user = currentUser.get();
+		
+		if (user==null) {
+			log.warn("aborting discovery as there is no current user to identify target workspace");
+			return emptyList();
+		}
+		
+		log.info("discovering assets in workspace of "+user.name());
 		
 		return assetsIn(ws.get(),invert(types));
 

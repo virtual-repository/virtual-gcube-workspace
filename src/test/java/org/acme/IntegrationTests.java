@@ -24,6 +24,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.fao.fi.comet.mapping.model.DataProvider;
 import org.fao.fi.comet.mapping.model.Mapping;
 import org.fao.fi.comet.mapping.model.MappingData;
+import org.gcube.common.homelibrary.home.HomeLibrary;
+import org.gcube.common.homelibrary.home.workspace.Workspace;
+import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
 import org.gcube.common.scope.api.ScopeProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -60,6 +63,22 @@ public class IntegrationTests {
 		properties().add(USERNAME.property("fabio.simeoni"));
 		ScopeProvider.instance.set("/gcube/devsec");
 	}
+	
+	@Test
+	public void accessTest() throws Exception {
+		
+		ScopeProvider.instance.set("/gcube/devsec");
+		
+		long time = System.currentTimeMillis();
+		
+		Workspace ws = HomeLibrary.getUserWorkspace("fabio.simeoni");
+		
+		for (WorkspaceItem item : ws.getRoot().getChildren())
+			item.getProperties().getProperties().keySet();
+		
+		System.out.println(System.currentTimeMillis()-time);
+	}
+		
 	
 	@Test
 	public void discover() {
@@ -99,6 +118,10 @@ public class IntegrationTests {
 		repository.discover(1000000,CsvCodelist.type);
 		
 		Asset codelist = repository.iterator().next();
+		
+		System.out.println(codelist.getClass());
+		System.out.println("asset:"+codelist);
+		System.out.println("properties"+codelist.properties());
 		
 		Table table = repository.retrieve(codelist,Table.class);
 		
@@ -152,6 +175,10 @@ public class IntegrationTests {
 		RepositoryService service = repository.services().lookup(WorkspacePlugin.name);
 		
 		CsvCodelist codelist = new CsvCodelist("another-sample-csv-codelist.txt",0, service);
+		
+		codelist.hasHeader(true);
+		codelist.setDelimiter('\t');
+		codelist.setQuote('"');
 		
 		Table table = new CsvStream2Table<>().apply(codelist,stream);
 		

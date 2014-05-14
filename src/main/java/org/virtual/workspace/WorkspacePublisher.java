@@ -46,27 +46,31 @@ public class WorkspacePublisher implements Publisher<Asset,InputStream> {
 		String folderId = workspace.getRoot().getId();
 		
 		Properties properties = asset.properties();
+		
+		//if there is a description property, use it here
 		String description = properties.contains(DESCRIPTION.name())?
 								properties.lookup(DESCRIPTION.name()).value().toString()
 								:""; 
 				
 		WorkspaceItem item = workspace.createExternalFile(asset.name(),description,type.mime(), content,folderId);
 		
+		//we cannot add properties to items at create time and we cannot add them all at once..
+		
+		org.gcube.common.homelibrary.home.workspace.Properties props = item.getProperties();
+		//add version
 		if (asset.version()!=null)
-			item.getProperties().addProperty(VERSION.name(),asset.version());
+			props.addProperty(VERSION.name(),asset.version());
 		
-		copy(properties,item);
-	}
-	
-	private void copy(Properties properties, WorkspaceItem item) throws Exception {
-		
+		//adds assets properties
 		for (Property prop : properties)
 			if (prop.isDisplay())
-				item.getProperties().addProperty(prop.name(),prop.value().toString());
+				props.addProperty(prop.name(),prop.value().toString());
 		
+		//adds type tags
 		for (String tag : type.tags())
-			item.getProperties().addProperty(tag,"true");
+			props.addProperty(tag,"true");
 		
+		type.toItem(asset,props);
 	}
 
 }

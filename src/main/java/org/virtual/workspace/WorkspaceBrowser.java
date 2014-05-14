@@ -4,10 +4,7 @@ import static java.util.Collections.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -19,6 +16,7 @@ import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.workspace.types.WorkspaceType;
+import org.virtual.workspace.types.WorkspaceTypes;
 import org.virtualrepository.AssetType;
 import org.virtualrepository.spi.Browser;
 import org.virtualrepository.spi.MutableAsset;
@@ -32,21 +30,21 @@ public class WorkspaceBrowser implements Browser {
 	
 	private final Provider<CurrentUser> currentUser;
 	
-	private final Map<AssetType,WorkspaceType> mapping = new HashMap<>(); 
+	private final WorkspaceTypes types;
 	
 	@Inject
-	public WorkspaceBrowser(Provider<Workspace> ws,  Provider<CurrentUser> currentUser, Set<WorkspaceType> types) {
+	public WorkspaceBrowser(Provider<Workspace> ws,  Provider<CurrentUser> currentUser, WorkspaceTypes types) {
 		
 		this.ws=ws;
 		
 		this.currentUser=currentUser;
 		
-		for (WorkspaceType type : types)
-			mapping.put(type.assetType(),type);
+		this.types=types;
+		
 	}
 
 	@Override
-	public Iterable<? extends MutableAsset> discover(Collection<? extends AssetType> types) throws Exception {
+	public Iterable<? extends MutableAsset> discover(Collection<? extends AssetType> assetTypes) throws Exception {
 		
 		CurrentUser user = currentUser.get();
 		
@@ -57,7 +55,7 @@ public class WorkspaceBrowser implements Browser {
 		
 		log.info("discovering assets in workspace of "+user.name());
 		
-		return assetsIn(ws.get(),invert(types));
+		return assetsIn(ws.get(),this.types.map(assetTypes));
 
 	}
 	
@@ -76,16 +74,5 @@ public class WorkspaceBrowser implements Browser {
 		}
 			
 		return items;
-	}
-
-	private Collection<WorkspaceType> invert(Collection<? extends AssetType> types) {
-		
-		Set<WorkspaceType> wtypes = new HashSet<>();
-		
-		for(AssetType atype : types)
-			if (mapping.containsKey(atype))
-				wtypes.add(mapping.get(atype));
-		
-		return wtypes;
 	}
 }

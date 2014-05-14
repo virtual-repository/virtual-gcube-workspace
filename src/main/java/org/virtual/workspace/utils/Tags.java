@@ -6,6 +6,6 @@ public enum Tags {
 	
 	CODELIST, MAPPING, 
 	
-	VERSION
+	VERSION, HEADER, DELIMITER, QUOTE, ENCODING
 	
 }

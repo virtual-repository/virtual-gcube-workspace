@@ -3,7 +3,6 @@ package org.virtual.workspace;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -13,6 +12,7 @@ import org.gcube.common.homelibrary.home.workspace.Workspace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.workspace.types.WorkspaceType;
+import org.virtual.workspace.types.WorkspaceTypes;
 import org.virtualrepository.spi.Browser;
 import org.virtualrepository.spi.ImportAdapter;
 import org.virtualrepository.spi.Importer;
@@ -38,7 +38,7 @@ public class WorkspaceProxy implements ServiceProxy, Lifecycle {
 	Provider<CurrentUser> currentUser;
 	
 	@Inject
-	Set<WorkspaceType> types;
+	WorkspaceTypes types;
 	
 	private final List<Publisher<?,?>> publishers = new ArrayList<Publisher<?,?>>();
 	private final List<Importer<?,?>> importers = new ArrayList<Importer<?,?>>();
@@ -50,7 +50,7 @@ public class WorkspaceProxy implements ServiceProxy, Lifecycle {
 		
 		log.info("supported types {}",types);
 		
-		for (WorkspaceType type : types) {
+		for (WorkspaceType type : types.all()) {
 			
 			Importer<?,?> baseImporter = new WorkspaceImporter(ws,type);
 			Publisher<?,?> basePublisher = new WorkspacePublisher(ws,type);

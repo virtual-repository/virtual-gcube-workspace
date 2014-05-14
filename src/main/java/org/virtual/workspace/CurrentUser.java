@@ -14,5 +14,10 @@ public class CurrentUser {
 	public String name() {
 		return username;
 	}
+
+	@Override
+	public String toString() {
+		return username;
+	}
 	
 }

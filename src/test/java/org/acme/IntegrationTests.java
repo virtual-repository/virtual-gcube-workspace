@@ -1,6 +1,7 @@
 package org.acme;
 
 import static java.lang.System.*;
+import static org.fao.fi.comet.mapping.dsl.DataProviderDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MappingContributionDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MappingDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MappingDataDSL.*;
@@ -197,8 +198,8 @@ public class IntegrationTests {
     	
     	Dummy d = new Dummy();
     	
-    	DataProvider sourceDataProvider = new DataProvider(new URI("urn:fooResourceStatus"), Dummy.class.getName());
-		DataProvider targetDataProvider = new DataProvider(new URI("urn:barResourceStatus"), Dummy.class.getName());
+    	DataProvider sourceDataProvider = provider("foo","foo","foo");
+		DataProvider targetDataProvider = provider("foo","foo","foo");
 		
 		MappingData mappingData = new MappingData().
 			id(new URI("urn:foo:bar")).
@@ -217,9 +218,9 @@ public class IntegrationTests {
 			).
 			with(minimumWeightedScore(0.3), maximumCandidates(5)).
 			including(
-				map(wrap(d).with(identifierFor(sourceDataProvider, new URI("urn:2")))).
+				map(wrap(d).with(identifierFor(new URI("urn:2")))).
 					to(
-						target(wrap(d).with(identifierFor(targetDataProvider, new URI("urn:70")))).
+						target(wrap(d).with(identifierFor(new URI("urn:70")))).
 							asContributedBy(matcher(new URI("urn:matcher:foo")).scoring(0.49), 
 											matcher(new URI("urn:matcher:bar")).scoring(0.59),
 											matcher(new URI("urn:matcher:baz")).nonPerformed()

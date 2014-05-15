@@ -16,22 +16,6 @@
 	</properties>
 
 
-	<repositories>
-	
-		<repository>
-			<snapshots />
-			<id>fips-snapshots</id>
-			<name>fips-snapshot</name>
-			<url>http://artifactory.fao.org/artifactory/fips</url>
-		</repository>
-
-
-		<!-- <repository> <id>sdmxsource</id> <url>http://www.metadatatechnology.com/nexus/content/repositories/releases</url> 
-			<snapshots> <enabled>true</enabled> </snapshots> <releases> <enabled>true</enabled> 
-			</releases> </repository> -->
-	</repositories>
-
-
 	<dependencies>
 
 		<dependency>
@@ -39,14 +23,14 @@
 			<artifactId>virtual-repository</artifactId>
 			<version>[1.0.0-SNAPSHOT,2.0.0-SNAPSHOT)</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.virtualrepository</groupId>
 			<artifactId>sdmxsource-adapter</artifactId>
 			<version>[1.0.0-SNAPSHOT,2.0.0-SNAPSHOT)</version>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>org.fao.fi.comet.mapping</groupId>
 			<artifactId>comet-mapping-format</artifactId>
@@ -156,6 +140,30 @@
 
 			<id>fao-ci</id>
 
+
+			<repositories>
+
+				<repository>
+					<id>gcube-releases</id>
+					<name>gCube Releases</name>
+					<url>http://maven.research-infrastructures.eu/nexus/content/repositories/gcube-releases</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+
+				<repository>
+					<snapshots />
+					<id>fips-snapshots</id>
+					<name>fips-snapshot</name>
+					<url>http://artifactory.fao.org/artifactory/fips</url>
+				</repository>
+
+			</repositories>
+
 			<distributionManagement>
 				<repository>
 					<id>${dm.rel.id}</id>
@@ -168,13 +176,13 @@
 					<url>${dm.snap.id-url}</url>
 				</snapshotRepository>
 			</distributionManagement>
-			
+
 		</profile>
 
 		<profile>
 
 			<id>gcube-ci</id>
-			
+
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -186,7 +194,7 @@
 					<url>http://maven.research-infrastructures.eu:8081/nexus/content/repositories/gcube-snapshots</url>
 				</snapshotRepository>
 			</distributionManagement>
-			
+
 		</profile>
 
 	</profiles>

@@ -3,6 +3,7 @@ package org.virtual.workspace.types;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import javax.inject.Singleton;
 import org.virtualrepository.AssetType;
 
 @Singleton
-public class WorkspaceTypes {
+public class WorkspaceTypes implements Iterable<WorkspaceType> {
 
 	private final Map<AssetType,WorkspaceType> mapping = new HashMap<>(); 
 	
@@ -29,19 +30,24 @@ public class WorkspaceTypes {
 
 	}
 
-	public Collection<WorkspaceType> map(Collection<? extends AssetType> types) {
+	public Collection<WorkspaceType> map(Collection<? extends AssetType> assetTypes) {
 		
-		Set<WorkspaceType> wtypes = new HashSet<>();
+		Set<WorkspaceType> types = new HashSet<>();
 		
-		for(AssetType atype : types)
-			if (mapping.containsKey(atype))
-				wtypes.add(mapping.get(atype));
+		for(AssetType assetType : assetTypes)
+			if (mapping.containsKey(assetType))
+				types.add(mapping.get(assetType));
 		
-		return wtypes;
+		return types;
 	}
 	
-	public Iterable<WorkspaceType> all() {
-		return mapping.values();
+	public Iterator<WorkspaceType> iterator() {
+		return mapping.values().iterator();
+	}
+	
+	@Override
+	public String toString() {
+		return mapping.values().toString();
 	}
 	
 }

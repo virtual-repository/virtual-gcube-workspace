@@ -11,13 +11,13 @@ import org.virtualrepository.Asset;
 import org.virtualrepository.impl.Type;
 import org.virtualrepository.spi.Importer;
 
-public class WorkspaceImporter implements Importer<Asset,InputStream> {
+public class StreamImporter implements Importer<Asset,InputStream> {
 
 	private final WorkspaceType type;
 	private final Provider<Workspace> ws;
 	
 	
-	public WorkspaceImporter(Provider<Workspace> ws, WorkspaceType type) {
+	public StreamImporter(Provider<Workspace> ws, WorkspaceType type) {
 		this.type=type;
 		this.ws=ws;
 	}

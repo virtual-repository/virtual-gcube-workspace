@@ -52,12 +52,12 @@ public class WsCometStreamMapping extends AbstractWorkspaceType<CometAsset,Input
 	}
 
 	@Override
-	public Transform<CometAsset, InputStream, InputStream> transformOnImport() {
+	public Transform<CometAsset, InputStream, InputStream> fromStream() {
 		return identity;
 	}
 
 	@Override
-	public Transform<CometAsset, InputStream, InputStream> transformOnPublih() {
+	public Transform<CometAsset, InputStream, InputStream> toStream() {
 		return identity;
 	}
 

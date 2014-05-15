@@ -16,13 +16,13 @@ import org.virtualrepository.Property;
 import org.virtualrepository.impl.Type;
 import org.virtualrepository.spi.Publisher;
 
-public class WorkspacePublisher implements Publisher<Asset,InputStream> {
+public class StreamPublisher implements Publisher<Asset,InputStream> {
 
 	private final WorkspaceType type;
 	private final Provider<Workspace> ws;
 	
 	
-	public WorkspacePublisher(Provider<Workspace> ws, WorkspaceType type) {
+	public StreamPublisher(Provider<Workspace> ws, WorkspaceType type) {
 		this.type=type;
 		this.ws=ws;
 	}

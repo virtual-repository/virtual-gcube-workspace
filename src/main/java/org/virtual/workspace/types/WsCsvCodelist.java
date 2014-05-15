@@ -94,12 +94,12 @@ public class WsCsvCodelist extends AbstractWorkspaceType<CsvCodelist,Table> {
 	}
 
 	@Override
-	public Transform<CsvCodelist, InputStream, Table> transformOnImport() {
+	public Transform<CsvCodelist, InputStream, Table> fromStream() {
 		return importTransform;
 	}
 
 	@Override
-	public Transform<CsvCodelist, Table, InputStream> transformOnPublih() {
+	public Transform<CsvCodelist, Table, InputStream> toStream() {
 		return publishTransform;
 	}
 }

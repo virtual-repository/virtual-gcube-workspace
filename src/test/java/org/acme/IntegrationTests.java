@@ -1,5 +1,6 @@
 package org.acme;
 
+import static java.lang.String.*;
 import static java.lang.System.*;
 import static org.fao.fi.comet.mapping.dsl.DataProviderDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MappingContributionDSL.*;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,6 +28,7 @@ import org.fao.fi.comet.mapping.model.Mapping;
 import org.fao.fi.comet.mapping.model.MappingData;
 import org.gcube.common.homelibrary.home.HomeLibrary;
 import org.gcube.common.homelibrary.home.workspace.Workspace;
+import org.gcube.common.homelibrary.home.workspace.WorkspaceFolder;
 import org.gcube.common.homelibrary.home.workspace.WorkspaceItem;
 import org.gcube.common.scope.api.ScopeProvider;
 import org.junit.BeforeClass;
@@ -47,6 +50,7 @@ import org.virtualrepository.VirtualRepository;
 import org.virtualrepository.comet.CometAsset;
 import org.virtualrepository.csv.CsvCodelist;
 import org.virtualrepository.csv.CsvStream2Table;
+import org.virtualrepository.csv.CsvTable;
 import org.virtualrepository.impl.Repository;
 import org.virtualrepository.sdmx.SdmxCodelist;
 import org.virtualrepository.tabular.Row;
@@ -69,14 +73,42 @@ public class IntegrationTests {
 		
 		ScopeProvider.instance.set("/gcube/devsec");
 		
-		long time = System.currentTimeMillis();
+		long start = currentTimeMillis(),
+			 last =start;
 		
 		Workspace ws = HomeLibrary.getUserWorkspace("fabio.simeoni");
 		
-		for (WorkspaceItem item : ws.getRoot().getChildren())
-			item.getProperties().getProperties().keySet();
+		System.out.println(format("workspace in %s ms.",currentTimeMillis() - last));
 		
-		System.out.println(System.currentTimeMillis()-time);
+		last = currentTimeMillis();
+		
+		WorkspaceFolder root = ws.getRoot();
+		
+		System.out.println(format("root in %s ms.",currentTimeMillis() - last));
+		
+		last = currentTimeMillis();
+		
+		List<WorkspaceItem> children = root.getChildren();
+
+		System.out.println(format("children in %s ms.",currentTimeMillis() - last));
+
+		last = currentTimeMillis();
+		
+		for (WorkspaceItem item : children) {
+			
+			System.out.println(format("item in %s ms.",currentTimeMillis() - last));
+		
+			last = currentTimeMillis();
+			
+			item.getProperties().getProperties().keySet();
+			
+			System.out.println(format("item properties in %s ms.",currentTimeMillis() - last));
+			
+			last = currentTimeMillis();
+
+		}
+		
+		System.out.println(format("total is %s ms.",currentTimeMillis() - start));
 	}
 		
 	
@@ -111,7 +143,7 @@ public class IntegrationTests {
 	
 	
 	@Test
-	public void retrieveCsvCodelist() throws Exception {
+	public void retrieveCsvTable() throws Exception {
 	
 		VirtualRepository repository = new Repository();
 		
@@ -129,6 +161,29 @@ public class IntegrationTests {
 			System.out.println(row);
 	}
 	
+	
+	@Test
+	public void retrieveCsvStream() throws Exception {
+	
+		VirtualRepository repository = new Repository();
+		
+		repository.discover(1000000,CsvCodelist.type);
+		
+		Asset codelist = repository.iterator().next();
+		
+		System.out.println(codelist.getClass());
+		System.out.println("asset:"+codelist);
+		System.out.println("properties"+codelist.properties());
+		
+		InputStream stream = repository.retrieve(codelist,InputStream.class);
+		
+		Table table = new CsvTable((CsvCodelist)codelist, stream);
+		
+		for (Row row : table)
+			System.out.println(row);
+		
+	}
+	
 	@Test
 	public void retrieveSdmxCodelist() throws Exception {
 	
@@ -142,6 +197,24 @@ public class IntegrationTests {
 		
 		print(bean);
 		
+		
+	}
+	
+	
+	@Test
+	public void retrieveSdmxStream() throws Exception {
+		
+		VirtualRepository repository = new Repository();
+		
+		repository.discover(1000000,SdmxCodelist.type);
+		
+		Asset codelist = repository.iterator().next();
+		
+		InputStream stream = repository.retrieve(codelist,InputStream.class);
+		
+		StructureWorkspace ws = SdmxServiceFactory.parser().parseStructures(new ReadableDataLocationTmp(stream));
+
+		ws.getStructureBeans(false);
 		
 	}
 	

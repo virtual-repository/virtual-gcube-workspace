@@ -53,15 +53,15 @@ public abstract class AbstractWorkspaceType<T extends MutableAsset, A> implement
 	protected abstract T getAsset(WorkspaceItem item) throws Exception;
 	
 	@Override
-	public abstract Transform<T, InputStream, A> transformOnImport();
+	public abstract Transform<T, InputStream, A> fromStream();
 
 	@Override
-	public abstract Transform<T, A, InputStream> transformOnPublih();
+	public abstract Transform<T, A, InputStream> toStream();
 
 	@Override
 	public String toString() {
-		boolean read = transformOnImport() != null;
-		boolean write = transformOnPublih() != null;
+		boolean read = fromStream() != null;
+		boolean write = toStream() != null;
 		return String.format("%s (%s|%s: %s)", type, read ? "R" : "-", write ? "W" : "-", tags());
 	}
 

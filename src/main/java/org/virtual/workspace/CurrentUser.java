@@ -7,8 +7,8 @@ public class CurrentUser {
 	private final String username;
 	
 	@Inject
-	public CurrentUser(String useusername) {
-		this.username=useusername;
+	public CurrentUser(String name) {
+		this.username=name;
 	}
 	
 	public String name() {

@@ -28,7 +28,9 @@ import dagger.Provides;
 @Module(injects=WorkspacePlugin.class)
 public class Dependencies {
 
-	
+	//provides current user, if it exists.
+	//can inject a Provider<CurrentUser> if want to check and tolerate absence (discovery)
+	//can inject one directly if current user is required (retrieval, publication)
 	@Provides
 	CurrentUser user() {
 		
@@ -57,6 +59,11 @@ public class Dependencies {
 	WorkspaceType csvcodelist(WsCsvCodelist list) {
 		return list;
 	}
+	
+//	@Provides(type=SET) @Singleton
+//	WorkspaceType csvstream(WsCsvCodelist list) {
+//		return list;
+//	}
 	
 	@Provides(type=SET) @Singleton
 	WorkspaceType sdmxcodelist(WsSdmxCodelist list) {

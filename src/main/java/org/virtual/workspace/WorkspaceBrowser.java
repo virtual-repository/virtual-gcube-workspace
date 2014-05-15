@@ -36,9 +36,7 @@ public class WorkspaceBrowser implements Browser {
 	public WorkspaceBrowser(Provider<Workspace> ws,  Provider<CurrentUser> currentUser, WorkspaceTypes types) {
 		
 		this.ws=ws;
-		
 		this.currentUser=currentUser;
-		
 		this.types=types;
 		
 	}

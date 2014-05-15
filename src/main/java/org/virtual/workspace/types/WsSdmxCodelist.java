@@ -102,12 +102,12 @@ public class WsSdmxCodelist extends AbstractWorkspaceType<SdmxCodelist,CodelistB
 	}
 
 	@Override
-	public Transform<SdmxCodelist, InputStream, CodelistBean> transformOnImport() {
+	public Transform<SdmxCodelist, InputStream, CodelistBean> fromStream() {
 		return importTransform;
 	}
 
 	@Override
-	public Transform<SdmxCodelist, CodelistBean, InputStream> transformOnPublih() {
+	public Transform<SdmxCodelist, CodelistBean, InputStream> toStream() {
 		return publishTransform;
 	}
 

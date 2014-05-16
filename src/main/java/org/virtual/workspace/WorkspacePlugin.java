@@ -10,6 +10,7 @@ import javax.xml.namespace.QName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.virtual.workspace.utils.Dependencies;
+import org.virtualrepository.Property;
 import org.virtualrepository.RepositoryService;
 import org.virtualrepository.spi.Lifecycle;
 import org.virtualrepository.spi.Plugin;
@@ -22,6 +23,7 @@ public class WorkspacePlugin implements Plugin, Lifecycle {
 	
 	private static final Logger log = LoggerFactory.getLogger(WorkspacePlugin.class);
 	
+	private static final String description = "Personal user space in a gCube Infrastructure.";
 
 	@Inject
 	WorkspaceProxy proxy;
@@ -39,6 +41,8 @@ public class WorkspacePlugin implements Plugin, Lifecycle {
 		
 		log.info("initialising plugin...");
 		
-		return singleton(new RepositoryService(name,proxy));
+		Property desc = new Property("description", description);
+		
+		return singleton(new RepositoryService(name,proxy,desc));
 	}
 }

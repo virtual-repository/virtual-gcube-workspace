@@ -12,6 +12,8 @@ import javax.inject.Singleton;
 
 import org.virtualrepository.AssetType;
 
+
+//groups workspace types for iteration and provide mappings with asset types
 @Singleton
 public class WorkspaceTypes implements Iterable<WorkspaceType> {
 
@@ -24,13 +26,14 @@ public class WorkspaceTypes implements Iterable<WorkspaceType> {
 			mapping.put(type.assetType(),type);
 	}
 	
-	public WorkspaceType map(AssetType type) {
+	
+	public WorkspaceType thatCorrespondTo(AssetType type) {
 		
 		return mapping.get(type);
 
 	}
 
-	public Collection<WorkspaceType> map(Collection<? extends AssetType> assetTypes) {
+	public Collection<WorkspaceType> thatCorrespondTo(Collection<? extends AssetType> assetTypes) {
 		
 		Set<WorkspaceType> types = new HashSet<>();
 		
@@ -41,9 +44,12 @@ public class WorkspaceTypes implements Iterable<WorkspaceType> {
 		return types;
 	}
 	
+	
+	
 	public Iterator<WorkspaceType> iterator() {
 		return mapping.values().iterator();
 	}
+	
 	
 	@Override
 	public String toString() {

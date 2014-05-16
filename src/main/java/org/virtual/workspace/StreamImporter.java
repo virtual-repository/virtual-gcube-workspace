@@ -36,9 +36,7 @@ public class StreamImporter implements Importer<Asset,InputStream> {
 	@Override
 	public InputStream retrieve(Asset asset) throws Exception {
 		
-		Workspace workspace = ws.get();
-		
-		return ExternalFile.class.cast(workspace.getItem(asset.id())).getData();
+		return ExternalFile.class.cast(ws.get().getItem(asset.id())).getData();
 	
 	}
 

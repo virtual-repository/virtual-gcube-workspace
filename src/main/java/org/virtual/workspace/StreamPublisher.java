@@ -27,7 +27,6 @@ public class StreamPublisher implements Publisher<Asset,InputStream> {
 		this.ws=ws;
 	}
 	
-	
 	@Override
 	public Type<? extends Asset> type() {
 		return type.assetType();
@@ -41,23 +40,24 @@ public class StreamPublisher implements Publisher<Asset,InputStream> {
 	@Override
 	public void publish(Asset asset, InputStream content) throws Exception {
 		
-		Workspace workspace = ws.get();
-		
-		String folderId = workspace.getRoot().getId();
-		
 		Properties properties = asset.properties();
 		
-		//if there is a description property, use it here
+		Workspace workspace = ws.get();
+		
+		//if there is a description property, lift it up
 		String description = properties.contains(DESCRIPTION.name())?
 								properties.lookup(DESCRIPTION.name()).value().toString()
 								:""; 
-				
+
+		String folderId = workspace.getRoot().getId();
+														
 		WorkspaceItem item = workspace.createExternalFile(asset.name(),description,type.mime(), content,folderId);
 		
-		//we cannot add properties to items at create time and we cannot add them all at once..
+		//note: we cannot add properties to items at create time and we cannot add them all at once..
 		
 		org.gcube.common.homelibrary.home.workspace.Properties props = item.getProperties();
-		//add version
+		
+		//add version as property (if it exists)
 		if (asset.version()!=null)
 			props.addProperty(VERSION.name(),asset.version());
 		
@@ -66,10 +66,11 @@ public class StreamPublisher implements Publisher<Asset,InputStream> {
 			if (prop.isDisplay())
 				props.addProperty(prop.name(),prop.value().toString());
 		
-		//adds type tags
+		//adds "type tags"
 		for (String tag : type.tags())
 			props.addProperty(tag,"true");
 		
+		//callback for type-specicif additions
 		type.toItem(asset,props);
 	}
 

@@ -17,7 +17,6 @@ import org.virtual.workspace.CurrentUser;
 import org.virtual.workspace.WorkspacePlugin;
 import org.virtual.workspace.types.WorkspaceType;
 import org.virtual.workspace.types.WsCometMapping;
-import org.virtual.workspace.types.WsCometStreamMapping;
 import org.virtual.workspace.types.WsCsvCodelist;
 import org.virtual.workspace.types.WsSdmxCodelist;
 import org.virtualrepository.Properties;
@@ -42,6 +41,8 @@ public class Dependencies {
 			null;
 	}
 	
+	//provides workspace of current user, if one is set.
+	//meant to be injected as Provider<Workspace> and obtained lazily just before use. 
 	@Provides
 	Workspace workspace(CurrentUser user) {
 			
@@ -55,30 +56,27 @@ public class Dependencies {
 		}
 	}
 	
+	
+	//suported types: gathered and injected in WorkspaceTypes
+	
 	@Provides(type=SET) @Singleton
 	WorkspaceType csvcodelist(WsCsvCodelist list) {
 		return list;
 	}
 	
-//	@Provides(type=SET) @Singleton
-//	WorkspaceType csvstream(WsCsvCodelist list) {
-//		return list;
-//	}
-	
 	@Provides(type=SET) @Singleton
 	WorkspaceType sdmxcodelist(WsSdmxCodelist list) {
-		return list;
-	}
-	
-	@Provides(type=SET) @Singleton
-	WorkspaceType cometmapping(WsCometStreamMapping mapping) {
-		return mapping;
+		return list;	
 	}
 	
 	@Provides(type=SET) @Singleton
 	WorkspaceType cometmapping(WsCometMapping mapping) {
 		return mapping;
 	}
+	
+	
+	
+	//sdmx I/O facilities for testing
 	
 	@Provides
 	StructureParsingManager parser() {

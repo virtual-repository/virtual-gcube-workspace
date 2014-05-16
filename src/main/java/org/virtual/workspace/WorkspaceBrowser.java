@@ -47,19 +47,19 @@ public class WorkspaceBrowser implements Browser {
 		CurrentUser user = currentUser.get();
 		
 		if (user==null) {
-			log.warn("aborting discovery as there is no current user to identify target workspace");
+			log.warn("aborting discovery: no current user identifies target workspace");
 			return emptyList();
 		}
 		
-		log.info("discovering assets in workspace of "+user.name());
+		log.info("discovering assets in {}'s workspace",user.name());
 		
-		return assetsIn(ws.get(),this.types.map(assetTypes));
+		return assetsIn(ws.get(),types.thatCorrespondTo(assetTypes));
 
 	}
 	
 	private Iterable<? extends MutableAsset> assetsIn(Workspace ws,Iterable<WorkspaceType> types) throws Exception {
 		
-		//TODO dummy logic for now, will send a query.
+		//TODO placebo logic for now, will send a query when support arrives.
 		
 		List<MutableAsset> items = new ArrayList<>();
 		

@@ -60,16 +60,16 @@ public class WorkspaceProxy implements ServiceProxy, Lifecycle {
 		
 		//type contributes importers and/or publishers based on type-specific APIs
 
-		//they are all derived from stream-based base versions
+		//they are all derived from stream-based versions
+		//which is the only API truly poken by the workspace
 		StreamImporter importer = new StreamImporter(ws,type);
 		StreamPublisher publisher = new StreamPublisher(ws,type);
 		
-		
-		//first derivation is no-op
 		importers.add(importer);
 		publishers.add(publisher);
 		
-		//add derived importer via transform stream->type
+		
+		//other importers are derived via transforms stream->type
 		
 		Transform<?,?,?> fromStream = type.fromStream();
 		
@@ -78,7 +78,7 @@ public class WorkspaceProxy implements ServiceProxy, Lifecycle {
 					adapt((Importer) importer,fromStream)
 			);
 		
-		//add derived publisher via transform type->stream
+		//other publishers are derived via transforms type->stream
 		
 		Transform<?,?,?> toStream = type.toStream();
 		

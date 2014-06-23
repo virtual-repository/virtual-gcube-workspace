@@ -2,6 +2,7 @@ package org.acme;
 
 import static java.lang.String.*;
 import static java.lang.System.*;
+import static java.util.Arrays.*;
 import static org.fao.fi.comet.mapping.dsl.DataProviderDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MappingContributionDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MappingDSL.*;
@@ -11,6 +12,7 @@ import static org.fao.fi.comet.mapping.dsl.MappingElementDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MappingElementIdentifierDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MatcherConfigurationDSL.*;
 import static org.fao.fi.comet.mapping.dsl.MatcherConfigurationPropertyDSL.*;
+import static org.junit.Assert.*;
 import static org.virtualrepository.CommonProperties.*;
 import static org.virtualrepository.Context.*;
 
@@ -69,9 +71,17 @@ public class IntegrationTests {
 	}
 	
 	@Test
-	public void accessTest() throws Exception {
+	public void queryByTag() throws Exception {
 		
 		ScopeProvider.instance.set("/gcube/devsec");
+		
+		Workspace ws = HomeLibrary.getUserWorkspace("fabio.simeoni");
+		
+		assertFalse(ws.searchByProperties(asList("CSV","CODELIST")).isEmpty());
+	}
+	
+	@Test
+	public void accessTest() throws Exception {
 		
 		long start = currentTimeMillis(),
 			 last =start;

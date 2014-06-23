@@ -5,7 +5,6 @@ import static java.util.Collections.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -59,18 +58,12 @@ public class WorkspaceBrowser implements Browser {
 	
 	private Iterable<? extends MutableAsset> assetsIn(Workspace ws,Iterable<WorkspaceType> types) throws Exception {
 		
-		//TODO placebo logic for now, will send a query when support arrives.
-		
 		List<MutableAsset> items = new ArrayList<>();
 		
-		for (WorkspaceItem item : ws.getRoot().getChildren()) { 
-			Set<String> keys = item.getProperties().getProperties().keySet();
-			for (WorkspaceType type : types)
-				if (keys.containsAll(type.tags()))
-					items.add(type.toAsset(item));
-	
-		}
-			
+		for (WorkspaceType type : types)
+			for (WorkspaceItem item : ws.searchByProperties(new ArrayList<>(type.tags())))
+				items.add(type.toAsset(item));
+		
 		return items;
 	}
 }

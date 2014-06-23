@@ -1,0 +1,24 @@
+"ISSCAAP"	"TAXOCODE"	"3A_CODE"	"Scientific_name"	"English_name"	"French_name"	"Spanish_name"	"Author"	"Family"	"Order"	"Stats_data"
+"25"	"1020100101"	"LAU"	"Petromyzon marinus"	"Sea lamprey"	"Lamproie marine"	"Lamprea marina"	"Linnaeus 1758"	"Petromyzontidae"	"PETROMYZONTIFORMES"	1
+"25"	"1020100201"	"LAR"	"Lampetra fluviatilis"	"River lamprey"	"Lamproie de rivi�re"	"Lamprea de r�o"	"(Linnaeus 1758)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	1
+"25"	"1020100203"	"IDK"	"Lampetra aepyptera"	"Least brook lamprey"	"Petite lamproie de ruisseau"		"(Abbott 1860)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100204"	"IDL"	"Lampetra ayresii"	"Western American river lamprey"	"Lamproie de rivi�re de l�ouest"		"(G�nther 1870)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100205"	"IDN"	"Lampetra planeri"	"European brook lamprey"	"Lamproie de ruisseau europ�ene"		"(Bloch 1784)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100206"	"IDO"	"Lampetra richardsoni"	"Western brook lamprey"	"Lamproie occidentale"		"Vladykov & Follett 1965"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100207"	"IKQ"	"Lampetra lanceolata"	"Turkish brook lamprey"	"Lamproie de ruisseau turque"		"Kux & Steiner 1972"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100208"	"IKR"	"Lampetra pacifica"	"Pacific coast brook lamprey"	"Lamproie de Pacifique"		"Vladykov 1973"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100401"	"LAY"	"Ichthyomyzon unicuspis"	"Silver lamprey"	"Lamproie argent�e"		"Hubbs & Trautman 1937"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100402"	"IDE"	"Ichthyomyzon bdellium"	"Ohio lamprey"	"Lamproie de l�Ohio"		"(Jordan 1885)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100403"	"IDG"	"Ichthyomyzon castaneus"	"Chestnut lamprey"	"Lamproie brune"		"Girard 1858"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100404"	"IDH"	"Ichthyomyzon fossor"	"Northern brook lamprey"	"Lamproie du nord"		"Reighard & Cummins 1916"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100405"	"IDI"	"Ichthyomyzon gagei"	"Southern brook lamprey"	"Lamproie m�ridionale"		"Hubbs & Trautman 1937"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100406"	"IDJ"	"Ichthyomyzon greeleyi"	"Mountain brook lamprey"	"Lamproie d�Allegheny"		"Hubbs & Trautman 1937"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100501"	"LAF"	"Eudontomyzon mariae"	"Ukrainian brook lamprey"	"Lamproie ukrainienne"		"(Berg 1931)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100502"	"ICJ"	"Eudontomyzon danfordi"	"Carpathian lamprey"	"Lamproie carpathique"		"Regan 1911"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100503"	"IKG"	"Eudontomyzon graecus"				"Renaud & Economidis 2010"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100504"	"IKJ"	"Eudontomyzon hellenicus"	"Greek brook Lamprey"	"Lamproie de ruisseau grecque"		"Vladykov, Renaud, Kott & Economidis 1982"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100505"	"IKL"	"Eudontomyzon morii"	"Korean lamprey"	"Lamproie cor�ene"		"(Berg 1931)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020100901"	"LAW"	"Caspiomyzon wagneri"	"Caspian lamprey"	"Lamproie caspienne"		"(Kessler 1870)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020101101"	"LSZ"	"Lethenteron camtschaticum"	"Arctic lamprey"	"Lamproie arctique"		"(Tilesius 1811)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020101102"	"IDQ"	"Lethenteron kessleri"	"Siberian lamprey"	"Lamproie de Sib�rie"		"(Anikin 1905)"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
+"25"	"1020101103"	"IDT"	"Lethenteron ninae"	"Western Transcaucasian lamprey"	"Lamproie de la Transcaucasie"		"Naseka, Tuniyev & Renaud 2009"	"Petromyzontidae"	"PETROMYZONTIFORMES"	0
